@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMPLY | AI Policy Compliance for California School Districts</title>
+    <meta name="description" content="COMPLY is CSBA's statutory compliance platform. COMPLY SB 1288 guides California school districts from no policy to board-ready AI governance documentation.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', 'Times New Roman', serif; line-height: 1.7; color: #000; background: #fff; }
+
+        :root {
+            --comply-blue: #1B4D89;
+            --comply-gold: #C4A000;
+            --comply-dark: #0d2847;
+        }
+
+        /* Header */
+        header {
+            background: #fff;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo {
+            color: #000;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 2px;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+        .logo span { color: var(--comply-blue); }
+        nav { display: flex; gap: 32px; align-items: center; }
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: color 0.2s;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+        nav a:hover { color: var(--comply-blue); }
+        nav .nav-cta {
+            background: var(--comply-blue);
+            color: #fff;
+            padding: 10px 24px;
+            font-weight: 500;
+        }
+        nav .nav-cta:hover { background: var(--comply-dark); color: #fff; }
+
+        /* Hero */
+        .hero {
+            min-height: 80vh;
+            background: linear-gradient(135deg, var(--comply-blue) 0%, var(--comply-dark) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 140px 24px 90px;
+            color: #fff;
+        }
+        .hero-content { max-width: 920px; }
+        .hero-eyebrow {
+            font-size: 0.8rem;
+            color: var(--comply-gold);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            font-weight: 600;
+        }
+        .hero h1 {
+            font-size: 3.4rem;
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 28px;
+        }
+        .hero h1 strong { font-weight: 700; }
+        .hero .subtitle {
+            font-size: 1.15rem;
+            max-width: 760px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 14px;
+            line-height: 1.9;
+        }
+        .hero .subtitle-secondary {
+            font-size: 1rem;
+            max-width: 680px;
+            color: rgba(255,255,255,0.72);
+            margin-bottom: 36px;
+            line-height: 1.85;
+            font-style: italic;
+        }
+        .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+        .hero-cta {
+            display: inline-block;
+            background: var(--comply-gold);
+            color: #1a1a1a;
+            text-decoration: none;
+            padding: 16px 34px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+        .hero-cta:hover { background: #a38800; }
+        .hero-cta-secondary {
+            display: inline-block;
+            background: transparent;
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 32px;
+            border: 2px solid rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+        .hero-cta-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+        /* Divider bar */
+        .divider-bar {
+            background: var(--comply-gold);
+            height: 4px;
+            width: 100%;
+        }
+
+        /* Sections */
+        section { padding: 80px 0; }
+        .section-eyebrow {
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+        .section-headline {
+            font-size: 2.2rem;
+            font-weight: 400;
+            margin-bottom: 24px;
+            color: #000;
+        }
+        .section-headline strong { font-weight: 700; }
+        .section-desc {
+            font-size: 1.05rem;
+            color: #444;
+            max-width: 760px;
+            margin-bottom: 40px;
+            line-height: 1.85;
+        }
+
+        /* Pathway fork */
+        .pathway-section { background: #f7f7f7; }
+        .pathway-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+            margin-top: 10px;
+        }
+        .pathway-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-top: 5px solid var(--comply-blue);
+            padding: 36px;
+        }
+        .pathway-card.secondary { border-top-color: var(--comply-gold); }
+        .pathway-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            font-weight: 700;
+            color: var(--comply-blue);
+            margin-bottom: 14px;
+        }
+        .pathway-card.secondary .pathway-tag { color: #8a6e00; }
+        .pathway-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 14px;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            font-weight: 600;
+        }
+        .pathway-card p {
+            font-size: 0.97rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+        .pathway-card .card-cta {
+            display: inline-block;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--comply-blue);
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            border-bottom: 2px solid var(--comply-blue);
+            padding-bottom: 2px;
+        }
+        .pathway-card.secondary .card-cta { color: #8a6e00; border-bottom-color: #8a6e00; }
+
+        /* Modules */
+        .modules-section { background: #fff; }
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .module-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-top: 4px solid var(--comply-blue);
+            padding: 30px;
+        }
+        .module-letter {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background: var(--comply-blue);
+            color: #fff;
+            text-align: center;
+            line-height: 36px;
+            font-weight: 700;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+        .module-card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+        .module-card p {
+            font-size: 0.93rem;
+            color: #555;
+            line-height: 1.8;
+        }
+        .module-anchor {
+            font-size: 0.78rem;
+            color: var(--comply-gold);
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            margin-top: 12px;
+            font-style: italic;
+        }
+
+        /* Architecture / data section */
+        .arch-section {
+            background: #111;
+            color: #fff;
+        }
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+            margin-top: 40px;
+        }
+        .arch-card {
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.03);
+            padding: 30px;
+        }
+        .arch-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: var(--comply-gold);
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            font-weight: 600;
+        }
+        .arch-card p {
+            color: rgba(255,255,255,0.82);
+            font-size: 0.93rem;
+            line-height: 1.85;
+        }
+
+        /* Output */
+        .output-section { background: #f7f7f7; }
+        .output-box {
+            background: #fff;
+            border: 2px solid var(--comply-blue);
+            padding: 40px;
+            margin-top: 30px;
+        }
+        .output-box h3 {
+            font-size: 1.3rem;
+            color: var(--comply-blue);
+            margin-bottom: 20px;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+        .output-cols {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0 40px;
+        }
+        .output-box ul { list-style: none; }
+        .output-box li {
+            padding: 9px 0;
+            padding-left: 28px;
+            position: relative;
+            font-size: 1rem;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .output-box li:before {
+            content: "\2713";
+            position: absolute;
+            left: 0;
+            color: var(--comply-gold);
+            font-weight: 700;
+        }
+        .output-note {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* GAMUT bridge */
+        .gamut-section { background: #fff; }
+        .gamut-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        .flow-box {
+            background: var(--comply-blue);
+            color: #fff;
+            padding: 20px 28px;
+            text-align: center;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            min-width: 160px;
+        }
+        .flow-box.gold { background: var(--comply-gold); color: #1a1a1a; }
+        .flow-box.dark { background: var(--comply-dark); }
+        .flow-box .flow-label {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            opacity: 0.8;
+        }
+        .flow-box .flow-name {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .flow-arrow {
+            font-size: 1.4rem;
+            color: #999;
+            padding: 0 6px;
+            font-family: sans-serif;
+        }
+        .gamut-desc {
+            font-size: 1rem;
+            color: #444;
+            max-width: 840px;
+            line-height: 1.85;
+            margin-top: 10px;
+        }
+
+        /* Help branch */
+        .help-section { background: #f7f7f7; }
+        .help-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+        .help-inner .help-text p {
+            font-size: 1rem;
+            color: #444;
+            line-height: 1.85;
+            margin-bottom: 16px;
+        }
+        .help-panel {
+            background: #1a1a2e;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 28px;
+            color: #fff;
+        }
+        .help-panel-header {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--comply-gold);
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            margin-bottom: 8px;
+        }
+        .help-panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            margin-bottom: 6px;
+        }
+        .help-panel-sub {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 18px;
+        }
+        .help-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .help-pill {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.85);
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            cursor: default;
+        }
+        .help-input {
+            display: flex;
+            gap: 8px;
+        }
+        .help-input-box {
+            flex: 1;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.9);
+            padding: 10px 14px;
+            font-size: 0.88rem;
+            font-family: 'Georgia', serif;
+        }
+        .help-send {
+            background: var(--comply-gold);
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 18px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            font-family: 'Segoe UI', sans-serif;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .help-tier-note {
+            font-size: 0.76rem;
+            color: rgba(255,255,255,0.45);
+            margin-top: 12px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* CTA */
+        .cta-section {
+            background: var(--comply-blue);
+            text-align: center;
+            color: #fff;
+        }
+        .cta-section .section-eyebrow { color: var(--comply-gold); }
+        .cta-section .section-headline { color: #fff; }
+        .cta-section .section-desc {
+            color: rgba(255,255,255,0.88);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta-button {
+            display: inline-block;
+            background: var(--comply-gold);
+            color: #1a1a1a;
+            text-decoration: none;
+            padding: 16px 40px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            margin-right: 14px;
+            margin-bottom: 10px;
+        }
+        .cta-button:hover { background: #a38800; }
+        .cta-button-secondary {
+            display: inline-block;
+            background: transparent;
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 38px;
+            border: 2px solid rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            margin-bottom: 10px;
+        }
+        .cta-button-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 50px 0;
+            text-align: center;
+        }
+        footer p, footer a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.9rem; }
+        footer a:hover { color: #fff; }
+        .footer-logo {
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 2px;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+        .footer-logo span { color: var(--comply-gold); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            nav { display: none; }
+            .hero h1 { font-size: 2.3rem; }
+            .modules-grid { grid-template-columns: 1fr; }
+            .arch-grid { grid-template-columns: 1fr; }
+            .pathway-grid { grid-template-columns: 1fr; }
+            .help-inner { grid-template-columns: 1fr; }
+            .output-cols { grid-template-columns: 1fr; }
+            .gamut-flow { gap: 4px; }
+            .flow-arrow { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="#" class="logo">COMPLY<span>.</span></a>
+        <nav>
+            <a href="#pathways">Get Started</a>
+            <a href="#modules">Six Modules</a>
+            <a href="#output">Output</a>
+            <a href="#gamut">GAMUT</a>
+            <a href="mailto:brian@h-edu.solutions" class="nav-cta">Request Briefing</a>
+        </nav>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <p class="hero-eyebrow">COMPLY SB 1288 &nbsp;&bull;&nbsp; California School Districts</p>
+            <h1>From no policy to <strong>board-ready AI governance</strong> in a single guided session.</h1>
+            <p class="subtitle">COMPLY is CSBA's statutory compliance platform. COMPLY SB 1288 walks every California LEA through a structured six-module workflow that satisfies every requirement of Education Code 33328.5 and produces a complete, board-ready AI policy document.</p>
+            <p class="subtitle-secondary">The first instance of the COMPLY product line. Built on the same distribution architecture CSBA has used with GAMUT for two decades.</p>
+            <div class="hero-cta-group">
+                <a href="#pathways" class="hero-cta">Start COMPLY SB 1288</a>
+                <a href="mailto:brian@h-edu.solutions" class="hero-cta-secondary">Request Briefing</a>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="divider-bar"></div>
+
+<!-- Pathways -->
+<section class="pathway-section" id="pathways">
+    <div class="container">
+        <p class="section-eyebrow">Two Pathways In</p>
+        <h2 class="section-headline">Start where your district <strong>actually is</strong></h2>
+        <p class="section-desc">COMPLY meets every district at its current state — whether you have existing policy language to build from, or you are starting from the CSBA model.</p>
+        <div class="pathway-grid">
+            <div class="pathway-card">
+                <span class="pathway-tag">Path A &mdash; Existing GAMUT Subscriber</span>
+                <h3>Your district already uses GAMUT</h3>
+                <p>Your account information is pulled from GAMUT and confirmed. Your existing board policies, acceptable use agreements, and AI guidance documents are uploaded and reconciled against SB 1288 requirements module by module. COMPLY identifies what you already have, what is partial, what conflicts, and what is absent — then works from your language as the baseline.</p>
+                <a href="mailto:brian@h-edu.solutions" class="card-cta">Begin as GAMUT District &rarr;</a>
+            </div>
+            <div class="pathway-card secondary">
+                <span class="pathway-tag">Path B &mdash; COMPLY Only</span>
+                <h3>Your district is not yet on GAMUT</h3>
+                <p>Enter your district's basic information and proceed directly into the six-module workflow. CSBA model policy language is your default starting position for each module. At completion, you receive a board-ready policy document formatted for direct GAMUT integration when you are ready. A follow-up channel captures your board adoption date and final adopted version.</p>
+                <a href="mailto:brian@h-edu.solutions" class="card-cta">Begin as COMPLY District &rarr;</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modules -->
+<section class="modules-section" id="modules">
+    <div class="container">
+        <p class="section-eyebrow">Six Modules &mdash; COMPLY SB 1288</p>
+        <h2 class="section-headline">Every requirement in <strong>Education Code 33328.5</strong></h2>
+        <p class="section-desc">Each module presents CSBA model policy language, assesses your district's current status, captures your customizations, and collects the compliance certifications required by the statute. Complete all six to unlock the Review &amp; Generate stage.</p>
+        <div class="modules-grid">
+            <div class="module-card">
+                <span class="module-letter">A</span>
+                <h3>Academic Integrity</h3>
+                <p>Policies governing plagiarism, AI-generated content disclosure, and academic honesty in the context of AI tools across grade levels.</p>
+                <p class="module-anchor">Anchors 33328.5(d)(4)(A)</p>
+            </div>
+            <div class="module-card">
+                <span class="module-letter">B</span>
+                <h3>Acceptable Uses</h3>
+                <p>Clear guidelines for appropriate and inappropriate AI use by students and educators. Covers grade-level differentiation and equity in access.</p>
+                <p class="module-anchor">Anchors 33328.5(d)(4)(B) &amp; (H)</p>
+            </div>
+            <div class="module-card">
+                <span class="module-letter">C</span>
+                <h3>Data Privacy</h3>
+                <p>FERPA, CCPA, and SOPIPA compliance framework. Data use agreements, privacy assessments, vendor certification, and breach notification protocols.</p>
+                <p class="module-anchor">Anchors 33328.5(d)(4)(C)</p>
+            </div>
+            <div class="module-card">
+                <span class="module-letter">D</span>
+                <h3>Parent Access</h3>
+                <p>Notification requirements, opt-out processes, and parent and guardian rights to access information pupils enter into AI systems.</p>
+                <p class="module-anchor">Anchors 33328.5(d)(4)(D)</p>
+            </div>
+            <div class="module-card">
+                <span class="module-letter">E</span>
+                <h3>Procurement</h3>
+                <p>Vendor vetting standards, contract provisions, AI tool registry, and annual review cycles. Produces the district's AI Tool Registry as a standalone artifact.</p>
+                <p class="module-anchor">Anchors 33328.5(d)(4)(E)</p>
+            </div>
+            <div class="module-card">
+                <span class="module-letter">F</span>
+                <h3>Human Oversight &amp; Professional Development</h3>
+                <p>Required human review before AI influences student decisions. Professional development standards and effectiveness evaluation for educators.</p>
+                <p class="module-anchor">Anchors 33328.5(d)(4)(F), (G) &amp; (I)</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GAMUT Bridge -->
+<section class="gamut-section" id="gamut">
+    <div class="container">
+        <p class="section-eyebrow">The GAMUT Integration</p>
+        <h2 class="section-headline">COMPLY sits <strong>beneath the GAMUT policy workflow</strong></h2>
+        <p class="section-desc">The distribution architecture is the same one CSBA has operated for two decades. COMPLY is the second wholesale supplier alongside eBOARDsolutions, feeding the same retail product family.</p>
+        <div class="gamut-flow">
+            <div class="flow-box">
+                <div class="flow-label">Association</div>
+                <div class="flow-name">CSBA</div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box dark">
+                <div class="flow-label">Platform</div>
+                <div class="flow-name">H-EDU</div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box gold">
+                <div class="flow-label">Product</div>
+                <div class="flow-name">COMPLY</div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box">
+                <div class="flow-label">Channel</div>
+                <div class="flow-name">GAMUT PLUS</div>
+            </div>
+        </div>
+        <div class="arch-grid" style="margin-top: 20px;">
+            <div class="arch-card">
+                <h3>GAMUT Hosts the Policy</h3>
+                <p>CSBA's GAMUT platform carries 650+ board policies for California LEAs. COMPLY generates AI policies that are formatted to integrate directly into GAMUT's policy record structure — BP number, section headings, legal references, mandated/conditionally-mandated flags.</p>
+            </div>
+            <div class="arch-card">
+                <h3>COMPLY Generates &amp; Verifies It</h3>
+                <p>COMPLY produces the board-ready policy document through the six-module workflow and verifies compliance against every 33328.5(d)(4) requirement, A through I. The audit trail documents each certification with timestamp, module reference, and supporting attachment.</p>
+            </div>
+            <div class="arch-card">
+                <h3>Annual Refresh Cycle</h3>
+                <p>A district's policy is not a one-time artifact. When CSBA publishes model policy updates, CDE issues new guidance, or statutory amendments occur, COMPLY flags every affected district and initiates a pre-populated refresh run covering only the changed material.</p>
+            </div>
+            <div class="arch-card">
+                <h3>The Subscription Mechanic</h3>
+                <p>The first COMPLY run is the heavy lift. Every annual refresh is incremental — twenty minutes, not a full session. This is the operational difference between selling a policy generator and selling a compliance platform. COMPLY is the latter.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Output -->
+<section class="output-section" id="output">
+    <div class="container">
+        <p class="section-eyebrow">What COMPLY Produces</p>
+        <h2 class="section-headline">Three deliverables, <strong>board-ready at generation</strong></h2>
+        <p class="section-desc">Every completed COMPLY SB 1288 run generates a full artifact set. The board-ready policy document, the AI tool registry, and the GAMUT ingestion payload are produced simultaneously at the Review &amp; Generate stage.</p>
+        <div class="output-box">
+            <h3>COMPLY SB 1288 &mdash; Artifact Set</h3>
+            <div class="output-cols">
+                <ul>
+                    <li>Board-ready AI governance policy document (.docx)</li>
+                    <li>CSBA board policy format: BP heading, section text, legal references, revision history</li>
+                    <li>District customizations integrated with CSBA model language</li>
+                    <li>FERPA / CCPA / SOPIPA compliance certifications with timestamps</li>
+                    <li>Parent notification template in plain English</li>
+                </ul>
+                <ul>
+                    <li>AI Tool Registry (.xlsx) &mdash; pre-populated from Module E responses</li>
+                    <li>Procurement documentation for COE and auditor review</li>
+                    <li>Human approval workflow specifications</li>
+                    <li>Statutory audit trail: section-by-section against 33328.5(d)(4)(A)&ndash;(I)</li>
+                    <li>GAMUT ingestion payload (JSON) for direct policy library integration</li>
+                </ul>
+            </div>
+            <p class="output-note">All artifacts carry the ComplyRun ID and generation timestamp. The board-adopted final version, once captured, supersedes the generated draft as the policy of record.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Help Branch -->
+<section class="help-section">
+    <div class="container">
+        <p class="section-eyebrow">The Help Branch</p>
+        <h2 class="section-headline">A real person is one click away, <strong>at every screen</strong></h2>
+        <div class="help-inner">
+            <div class="help-text">
+                <p>COMPLY is not a self-service tool districts have to figure out alone. A persistent Help affordance appears on every screen of the workflow. One click opens an immediate-response channel.</p>
+                <p><strong>Tier 1 — AI assistance, instant.</strong> Trained on COMPLY documentation, SB 1288 statutory text, and CSBA model policy language. Handles the majority of questions in under two seconds, around the clock.</p>
+                <p><strong>Tier 2 — H-EDU staff, immediate.</strong> When a question requires legal interpretation, involves a complex local circumstance, or the user asks for a person, the conversation escalates to a live H-EDU staff queue. The staff member sees the full conversation history, the user's current module location, and the district's prior COMPLY work. They can answer — or complete the user's work alongside them.</p>
+                <p>For California districts with small staff and no AI policy precedent, this is the difference between a tool that gets adopted and one that doesn't.</p>
+            </div>
+            <div>
+                <div class="help-panel">
+                    <div class="help-panel-header">COMPLY Help</div>
+                    <div class="help-panel-title">Get immediate help with your COMPLY workflow</div>
+                    <div class="help-panel-sub">Ask anything about COMPLY, your district's policy, or where you are stuck.</div>
+                    <div class="help-pills">
+                        <div class="help-pill">What does FERPA opt-out require?</div>
+                        <div class="help-pill">Can I skip Module D?</div>
+                        <div class="help-pill">Where does the AI registry go?</div>
+                        <div class="help-pill">I need a person</div>
+                    </div>
+                    <div class="help-input">
+                        <input class="help-input-box" type="text" placeholder="Ask about COMPLY..." />
+                        <button class="help-send">Send</button>
+                    </div>
+                    <div class="help-tier-note">Instant AI response &bull; H-EDU staff available on escalation</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <p class="section-eyebrow">Get Started</p>
+        <h2 class="section-headline">Begin COMPLY SB 1288 for your California district</h2>
+        <p class="section-desc">Complete the six-module workflow and generate your board-ready AI governance policy, AI tool registry, and GAMUT ingestion payload. No prior policy work required.</p>
+        <a href="mailto:brian@h-edu.solutions" class="cta-button">Start COMPLY SB 1288</a>
+        <a href="mailto:brian@h-edu.solutions" class="cta-button-secondary">Request Briefing</a>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <a href="#" class="footer-logo">COMPLY<span>.</span></a>
+        <p style="margin-top: 6px;">A product of <a href="https://h-edu.solutions">H-EDU.solutions</a> &mdash; distributed by CSBA as GAMUT PLUS</p>
+        <p style="margin-top: 10px;">&copy; 2026 H-EDU.solutions &bull; <a href="https://h-edu.solutions">H-EDU Global</a> &bull; <a href="mailto:brian@h-edu.solutions">brian@h-edu.solutions</a></p>
+    </div>
+</footer>
+
+</body>
+</html>
