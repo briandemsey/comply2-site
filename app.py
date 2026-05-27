@@ -408,9 +408,7 @@ def screen_landing():
     st.markdown(f"""
     <p style="color:#888; font-size:0.88rem;">
     COMPLY SB 1288 addresses Education Code 33328.5(d)(4) items (A) through (I).
-    Distributed by CSBA as GAMUT PLUS &nbsp;·&nbsp; Powered by
-    <a href="https://h-edu.solutions" style="color:{COMPLY_BLUE};">H-EDU.solutions</a>
-    &nbsp;·&nbsp; Questions: <a href="mailto:brian@h-edu.solutions" style="color:{COMPLY_BLUE};">brian@h-edu.solutions</a>
+    Distributed by CSBA as GAMUT PLUS.
     </p>
     """, unsafe_allow_html=True)
 
@@ -788,9 +786,7 @@ def render_sidebar():
 
         st.markdown(f"""
         <div style="font-size:0.78rem; color:#aaa; margin-top:16px; line-height:1.7;">
-            COMPLY SB 1288 v2.0<br>
-            H-EDU.solutions<br>
-            <a href="mailto:brian@h-edu.solutions" style="color:{COMPLY_BLUE};">Get Help</a>
+            COMPLY SB 1288 v2.0
         </div>
         """, unsafe_allow_html=True)
 
